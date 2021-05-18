@@ -1,19 +1,14 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
-import BoardList from "../views/board/list.vue";
-import BoardRead from "../views/board/read.vue";
-import BoardWrite from "../views/board/write.vue";
-import Board from "../views/board/board.vue";
+import BoardList from "../views/list.vue";
+import BoardRead from "../views/read.vue";
+import BoardWrite from "../views/write.vue";
+import Board from "../views/board.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: "/",
-    name: "Home",
-    component: Home,
-  },
+
   {
     path: "/board",
     name: "Board",

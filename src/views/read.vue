@@ -29,7 +29,7 @@
 
 <script>
 import commentlist from '@/components/CommentList.vue';
-import Boardhttp from '../../../util/Boardhttp';
+import Boardhttp from '../util/Boardhttp';
 import Detail from '@/components/Detail.vue';
 export default {
   name: 'read',
