@@ -1,12 +1,10 @@
 <template>
   <div>
     <detail
-      :content="item.bcontent"
-      :title="item.btitle"
-      :userid="item.bwriter"
-      :bregdate="item.bregdate"
-      
+      :board="board"
     />
+
+
 
   <div v-if="cmtList.length > 0">
     <table class="table table-striped">
@@ -31,6 +29,7 @@
 import commentlist from '@/components/CommentList.vue';
 import Boardhttp from '../util/Boardhttp';
 import Detail from '@/components/Detail.vue';
+import {mapGetters} from 'vuex';
 export default {
   name: 'read',
   components: {
@@ -44,11 +43,9 @@ export default {
     };
   },
   created() {
+    console.log("read!");
     console.log(this.$route.query);
-      Boardhttp.get(`/board?bnum=${this.$route.query.bnum}`).then(({ data }) => {
-      this.item = data;
-    
-    });
+    this.$store.dispatch("getBoard",this.$route.query.bnum);
     this.getCmtList();
 
   },
@@ -57,7 +54,11 @@ export default {
       Boardhttp.get(`/ajax?bnum=${this.$route.query.bnum}`).then(({ data }) => {
       this.cmtList = data;
     });
-    }
+    },
+  
+  },
+  computed:{
+     ...mapGetters(['board']),
   }
 };
 </script>

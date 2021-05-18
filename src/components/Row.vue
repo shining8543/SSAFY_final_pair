@@ -1,34 +1,39 @@
 <template>
   <tr>
-    <td>{{ userid }}</td>
+  
+    <td>{{ board.bwriter }}</td>
     <td>
-      <router-link :to="`${getLink()}`">{{ title }}</router-link>
+     <router-link :to="`read?bnum=${board.bnum}`">{{ board.btitle }}</router-link> 
     </td>
-    <td>{{ views }}</td>
-
-    <td>{{ board.bregdate }}</td>
+    <td>{{ getFormatDate(board.bregdate) }}</td> 
   </tr>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import moment from "moment";
 export default {
   name: "row",
   props: {
-    userid: { type: String },
-    title: { type: String },
-    views: { type: Number },
-    articleid: { type: Number },
-    bregdate: { type: String },
-    type: { type: String },
+    // userid: { type: String },
+    // title: { type: String },
+    // views: { type: Number },
+    // articleid: { type: Number },
+    // bregdate: { type: String },
+    // type: { type: String },
+    board:{type:Object},
   },
   computed: {
-    ...mapGetters(["getBoard"]),
+  
   },
   created() {
-    this.$store.dispatch("getRegdate");
-    this.bregdate = eval(this.bregdate);
+     //this.$store.dispatch("getRegdate");
+
+    // this.bregdate = eval(this.bregdate);
   },
-  methods: {},
+  methods: {
+     getFormatDate(regtime) {
+      return moment(new Date(regtime)).format('YYYY.MM.DD');
+    },
+  },
 };
 </script>

@@ -7,12 +7,15 @@
         <th>작성일</th>
       </tr>
       <tr>
-        <td>{{ title }}</td>
-        <td>{{ userid }}</td>
-        <td>{{ getFormatDate(bregdate) }}</td>
+        <td>{{ board.btitle }}</td>
+        <td>{{ board.bwriter }}</td>
+        <td>{{ getFormatDate(board.bregdate) }}</td>
       </tr>
       <tr>
-        <td colspan="3">{{ content }}</td>
+        <td colspan="3">작성글</td>
+      </tr>
+      <tr>
+        <td colspan="3">{{ board.bcontent }}</td>
       </tr>
     </table>
 
@@ -21,14 +24,16 @@
 </template>
  
 <script>
+import moment from "moment";
 export default {
   name: "detail",
   props: {
-    userid: { type: String },
-    title: { type: String },
-    content: { type: String },
-    bregdate: { type: Number },
+    board :{type:Object}
   },
-  methods: {},
+  methods: {
+       getFormatDate(regtime) {
+      return moment(new Date(regtime)).format('YYYY.MM.DD HH:mm:ss');
+    },
+  },
 };
 </script>

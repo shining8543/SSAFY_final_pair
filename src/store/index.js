@@ -81,7 +81,7 @@ export default new Vuex.Store({
     },
     getBoard(context, payload){
       boardhttp
-      .get("/board/read?bnum=" + payload)
+      .get("/board?num=" + payload)
       .then(({data})=>{
         context.commit("setBoard",data);
       })
@@ -100,7 +100,7 @@ export default new Vuex.Store({
         .then(({ data }) => {
           console.log("getBoards");
           context.commit("setBoards",data);
-          context.commit("setTotalCount",data.totalPage);
+          context.commit("setTotalPage",data.totalPage);
           context.commit("setEndPage",data.endPage);
           context.commit("setStartPage",data.startPage);
           context.commit("setCurPage",payload.curPage);
