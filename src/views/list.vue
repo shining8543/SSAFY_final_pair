@@ -97,7 +97,7 @@ export default {
          this.pages=data;
       })
       .catch(() => {
-        alert('에러가 발생했습니다.');
+        alert('에러가 발생했습니다. ㅎ');
       });
   },
   methods: {
