@@ -44,55 +44,66 @@ export default new Vuex.Store({
   mutations: {
     setComments(){},
     setComment(){},
-    setBoard(){},
+    setBoard(state, payload){
+      state.board = payload;
+    },
     setBoards(state,payload){
       state.boards = payload.bList;
     },
-    setEndPage(){
-
+    setEndPage(state, payload){
+      state.EndPage = payload;
     },
-    setTotalPage(){
-
+    setTotalPage(state, payload){
+      state.totalPage = payload;
     },
-    setStartPage(){
-
+    setStartPage(state ,payload){
+      state.startPage = payload;
     },
-    setCurPage(){
-
+    setCurPage(state, payload){
+      state.curPage = payload;
     }
   },
   actions: {
-    movePage(page) {
+    movePage(context, page) {
       boardhttp
-        .get("/boardMain?page=" + page)
-        .then(({ data }) => {
-          this.items = data.bList;
-          this.pages = data;
-          console.log(this.pages + " 들어옴");
-        })
-        .catch(() => {
-          alert("에러가 발생했습니다.");
-        });
+      .get("/BoardMain?page=" + page)
+      .then(({ data }) => {
+        console.log("movepage");
+        context.commit("setBoards",data);
+        context.commit("setTotalCount",data.totalPage);
+        context.commit("setEndPage",data.endPage);
+        context.commit("setStartPage",data.startPage);
+        context.commit("setCurPage",page);
+      })
+      .catch(() => {
+        alert("에러가 발생했습니다.");
+      });
+    },
+    getBoard(context, payload){
+      boardhttp
+      .get("/board/read?bnum=" + payload)
+      .then(({data})=>{
+        context.commit("setBoard",data);
+      })
     },
 
-    getBoard(context){
-      // this.board = "board";            
-      if ( this.state.curPage== null) {
-        console.log("null");
-        this.page = 1;
-      } else {
-        this.page = this.$route.query.page;
-      }
 
+
+    getBoards(context, payload){
+      // this.board = "board";            
+      if ( payload.curPage== null) {
+        console.log("null");
+        payload.curPage = 1;
+      } 
       boardhttp
-        .get("/BoardMain?page=" + this.page)
+        .get("/BoardMain?page=" + payload.curPage)
         .then(({ data }) => {
-          console.log("enter");
+          console.log("getBoards");
           context.commit("setBoards",data);
           context.commit("setTotalCount",data.totalPage);
           context.commit("setEndPage",data.endPage);
           context.commit("setStartPage",data.startPage);
-          context.commit("setCurPage",data.curPage);
+          context.commit("setCurPage",payload.curPage);
         })
         .catch(() => {
           alert("에러가 발생했습니다.");
@@ -103,11 +114,11 @@ export default new Vuex.Store({
     randomViews() {
       return Math.floor(Math.random(10, 100) * 100);
     },
-    getFormatDate(regtime) {
-      return moment(new Date(regtime)).format('YYYY.MM.DD');
-    },
-    getFormatDateDetail(regtime) {
-      return moment(new Date(regtime)).format('YYYY.MM.DD HH:mm:ss');
-    },
+    // getFormatDate(regtime) {
+    //   return moment(new Date(regtime)).format('YYYY.MM.DD');
+    // },
+    // getFormatDateDetail(regtime) {
+    //   return moment(new Date(regtime)).format('YYYY.MM.DD HH:mm:ss');
+    // },
   },
 });
