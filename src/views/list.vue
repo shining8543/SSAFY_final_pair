@@ -1,6 +1,3 @@
-	
-오후 3:26
-
 
 
 <template>
@@ -65,7 +62,7 @@
 
 
 <script>
-import boardhttp from '../../../util/Boardhttp';
+import boardhttp from '../util/Boardhttp';
 import ListRow from '@/components/Row.vue';
 export default {
   name: 'list',
@@ -93,7 +90,7 @@ export default {
       this.page=this.$route.query.page;
     }
     boardhttp
-      .get('/boardMain?page='+this.page)
+      .get('/BoardMain?page='+this.page)
       .then(({ data }) => {
           console.log("enter");
          this.items = data.bList;
