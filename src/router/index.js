@@ -1,6 +1,10 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import BoardList from "../views/board/list.vue";
+import BoardRead from "../views/board/read.vue";
+import BoardWrite from "../views/board/write.vue";
+import Board from "../views/board/board.vue";
 
 Vue.use(VueRouter);
 
@@ -11,18 +15,32 @@ const routes = [
     component: Home,
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+    path: "/board",
+    name: "Board",
+    component: Board,
+    redirect:"board/list",
+    children:[
+      {
+      path:"list",
+      name:"boardlist",
+      component:BoardList,
+      },
+      {
+        path:"write",
+        name:"boardWrite",
+        component:BoardWrite,
+      },
+      {
+        path:"read",
+        name:"boardRead",
+        component:BoardRead,
+      },
+    ],
   },
 ];
 
 const router = new VueRouter({
-  mode: "history",
+  mode: 'history',
   base: process.env.BASE_URL,
   routes,
 });
