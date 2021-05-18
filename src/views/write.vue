@@ -21,9 +21,10 @@
           max-rows="10"
           required
         ></b-form-textarea>
+          <b-button @click="add">등록하기</b-button>
       </b-form-group>
 
-      <b-button @click="add">등록하기</b-button>
+    
     </b-container>
   </div>
 </template>
@@ -41,7 +42,9 @@ export default {
   },
   methods: {
     add() {
-      this.$store.dispatch("postBoard", this.board).then(() => {});
+      this.$store.dispatch("postBoard", this.board).then(() => {
+        this.$router.push("list");
+      });
     },
   },
 };
