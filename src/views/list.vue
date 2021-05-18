@@ -1,7 +1,23 @@
 
 
 <template>
+  
   <div>
+
+    <b-input-group>
+  
+      <b-dropdown text="Dropdown" variant="info">
+        <b-dropdown-item>작성자 </b-dropdown-item>
+        <b-dropdown-item>글 내용 </b-dropdown-item>
+      </b-dropdown>
+
+
+    <b-form-input></b-form-input>
+<b-input-group-append>
+     <b-button variant="outline-success">submit</b-button>
+    </b-input-group-append>
+  </b-input-group>
+
     <div v-if="boards.length">
       <table class="table table-bordered table-condensed">
         <colgroup>
@@ -40,9 +56,7 @@
               v-bind:key="i"
             >
               <a href="#" @click="movePage(i)" class="page-link">{{ i }}</a>
-            </li>
-            {{endPage}}
-            {{totalPage}}
+            </li>   
             <li v-if="endPage < totalPage" class="page-item">
               <a
                 href="#"
@@ -61,7 +75,10 @@
       <!-- <button @click="`${movePage(pages.curPage-1)}`" class="btn btn-primary">이전</button>
       <button @click="`${movePage(pages.curPage+1)}`" class="btn btn-primary">다음</button> -->
     </div>
+
+   <button class="btn btn-primary" >등록</button> 
   </div>
+  
 </template>
 
 
