@@ -22,7 +22,7 @@
 
 
 ## DB Modeling 
-![](/img/finalboard.png)
+![](/img/finalDB.png)
 <br><br>
 
 ## 게시판 화면 
