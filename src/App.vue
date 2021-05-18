@@ -1,13 +1,8 @@
 <template>
   <div id="app">
     <div id="nav">
-<<<<<<< HEAD
-      <router-link to="/">Home</router-link> |
-      <router-link to="/board">게시판</router-link>
-=======
       <router-link to="/board">Home</router-link> |
       <router-link to="/about">게시판</router-link>
->>>>>>> 9906c868cb25f9c302aaab5cffd860083ea15f8b
     </div>
     <router-view />
   </div>
