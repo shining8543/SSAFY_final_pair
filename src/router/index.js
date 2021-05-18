@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import BoardList from "../views/list.vue";
 import BoardRead from "../views/read.vue";
 import BoardWrite from "../views/write.vue";
+import BoardModify from "../views/modify.vue";
 import Board from "../views/board.vue";
 
 Vue.use(VueRouter);
@@ -30,6 +31,12 @@ const routes = [
         name:"boardRead",
         component:BoardRead,
       },
+      {
+        path:"modify",
+        name:"boardModify",
+        component:BoardModify,
+      },
+      
     ],
   },
 ];

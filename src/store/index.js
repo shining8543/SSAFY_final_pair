@@ -123,7 +123,28 @@ export default new Vuex.Store({
         .catch(() => {
           alert("에러가 발생했습니다.");
         });
-    }
+    },
+    deleteBoard(context,payload){
+      console.log(payload.bnum);
+      boardhttp
+      .delete("/board?num="+payload.bnum)
+      .then(()=>{
+        alert("삭제 되었습니다!");
+      })
+      .catch(()=>{
+        alert("게시글 삭제 중 에러 발생");
+      })
+    },
+    putBoard(context,payload){
+      boardhttp
+      .put("/board",payload)
+      .then(()=>{
+        alert("수정 완료");
+      })
+      .catch(()=>{
+        alert("modify error");
+      })
+    },
     // getFormatDate(regtime) {
     //   return moment(new Date(regtime)).format('YYYY.MM.DD');
     // },
