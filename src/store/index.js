@@ -114,6 +114,18 @@ export default new Vuex.Store({
     randomViews() {
       return Math.floor(Math.random(10, 100) * 100);
     },
+    postBoard(context, payload) {
+      console.log(context+" context임");
+      console.log(payload);
+      boardhttp
+        .post("/board",payload)
+        .then(() => {
+        
+        })
+        .catch(() => {
+          alert("에러가 발생했습니다.");
+        });
+    }
     // getFormatDate(regtime) {
     //   return moment(new Date(regtime)).format('YYYY.MM.DD');
     // },

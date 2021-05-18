@@ -33,11 +33,9 @@ export default {
   data() {
     return {
       board: {
-        bnum: "",
-        bwriter: "",
+        bwriter: "ssafy",
         btitle: "",
         bcontent: "",
-        bregdate: "",
       },
     };
   },

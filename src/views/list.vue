@@ -76,7 +76,7 @@
       <button @click="`${movePage(pages.curPage+1)}`" class="btn btn-primary">다음</button> -->
     </div>
 
-   <button class="btn btn-primary" >등록</button> 
+   <button class="btn btn-primary" @click="write" >등록</button> 
   </div>
   
 </template>
@@ -113,22 +113,9 @@ export default {
 
 
   methods :{
-
-    // randomViews() {
-    //   return Math.floor(Math.random(10, 100) * 100);
-    // },
-    // movePage(page) {
-    //   boardhttp
-    //     .get("/boardMain?page=" + page)
-    //     .then(({ data }) => {
-    //       this.items = data.bList;
-    //       this.pages = data;
-    //       console.log(this.pages + " 들어옴");
-    //     })
-    //     .catch(() => {
-    //       alert("에러가 발생했습니다.");
-    //     });
-    // },
+    write(){
+      this.$router.push("write");
+    },
     range(start, end) {
       let list = [];
       for (let i = start; i <= end; i++) {
