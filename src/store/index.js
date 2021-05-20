@@ -6,6 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    userInfo:{},
     board:{},
     boards:[],
     comment:{},
@@ -60,6 +61,9 @@ export default new Vuex.Store({
     aptCurPage(state){
       return state.aptCurPage;
     },
+    userInfo(state){
+      return state.userInfo;
+    }
     
   },
   mutations: {
@@ -95,8 +99,11 @@ export default new Vuex.Store({
     setAptCurPage(state, payload){
       state.curPage = payload;
     },
-    setAptInfos(state, payload) {
+    setaptInfos(state, payload) {
       state.aptInfos = payload.bList;
+    },
+    setUserInfo(state,payload){
+      state.userInfo = payload.userInfo;
     }
 
 
@@ -123,8 +130,7 @@ export default new Vuex.Store({
       .then(({data})=>{
         context.commit("setBoard",data);
       })
-    },
-    getAptInfos(context, payload){
+    },    getAptInfos(context, payload){
       // this.board = "board";            
       if ( payload.curPage== null) {
         console.log("null");
@@ -145,7 +151,7 @@ export default new Vuex.Store({
         });
 
     },
-
+    
 
 
     getBoards(context, payload){
@@ -204,6 +210,18 @@ export default new Vuex.Store({
         alert("modify error");
       })
     },
+    
+  login(context,payload){
+    boardhttp
+    .post("/user/login", payload)
+    .then(({data})=>{
+      console.log("로그인 성공");
+      context.commit("userInfo",{data});
+    })
+  },
+
+
+    
     // getFormatDate(regtime) {
     //   return moment(new Date(regtime)).format('YYYY.MM.DD');
     // },
