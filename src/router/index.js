@@ -14,7 +14,7 @@ const routes = [
     path: "/board",
     name: "Board",
     component: Board,
-    redirect:"board/list",
+    //redirect:"board/list",
     children:[
       {
       path:"list",

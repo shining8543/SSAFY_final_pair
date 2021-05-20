@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <detail :board="board" />
 
     <div v-if="cmtList.length > 0">
@@ -20,6 +21,7 @@
 </template>
 
 <script>
+
 import commentlist from "@/components/CommentList.vue";
 import Boardhttp from "../util/Boardhttp";
 import Detail from "@/components/Detail.vue";

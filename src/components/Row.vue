@@ -5,7 +5,7 @@
     <td>
      <router-link :to="`read?bnum=${board.bnum}`">{{ board.btitle }}</router-link> 
     </td>
-    <td>{{ getFormatDate(board.bregdate) }}</td> 
+    <td>{{ getFormatDate(board.bregdate)}}</td> 
   </tr>
 </template>
 

@@ -13,11 +13,19 @@ export default new Vuex.Store({
     startPage:"",
     endPage:"",
     totalPage:"",
-    curPage:"",
+    curPage: "",
+    aptInfos: [],
+    aptStartPage:"",
+    aptEndPage:"",
+    aptTotalPage:"",
+    aptCurPage: "",
   },
   getters:{
     boards(state){
       return state.boards;
+    },
+    aptInfos(state) {
+      return state.aptInfos;
     },
     board(state){
       return state.board;
@@ -39,7 +47,20 @@ export default new Vuex.Store({
     },
     curPage(state){
       return state.curPage;
-    }
+    },
+    aptStartPage(state){
+      return state.aptStartPage;
+    },
+    aptEndPage(state){
+      return state.aptEndPage;
+    },
+    aptTotalPage(state){
+      return state.aptTotalPage;
+    },
+    aptCurPage(state){
+      return state.aptCurPage;
+    },
+    
   },
   mutations: {
     setComments(){},
@@ -61,7 +82,24 @@ export default new Vuex.Store({
     },
     setCurPage(state, payload){
       state.curPage = payload;
+    },
+    setAptEndPage(state, payload){
+      state.EndPage = payload;
+    },
+    setAptTotalPage(state, payload){
+      state.totalPage = payload;
+    },
+    setAptStartPage(state ,payload){
+      state.startPage = payload;
+    },
+    setAptCurPage(state, payload){
+      state.curPage = payload;
+    },
+    setaptInfos(state, payload) {
+      state.aptInfos = payload.bList;
     }
+
+
   },
   actions: {
     movePage(context, page) {
