@@ -2,7 +2,7 @@
 **[OverView : 프로젝트 목표]**  
 
 * DB Modeling
-* Vue 
+* Vue (https://github.com/shining8543/SSAFY_final_pair)
 * Spring Boot (REST API) (https://lab.ssafy.com/uhs2000/pairproject11)
 
 ## Built With PairTeam
@@ -22,7 +22,7 @@
 
 
 ## DB Modeling 
-![](/img/finalboard.png)
+![](/img/finalDB.png)
 <br><br>
 
 ## 게시판 화면 
