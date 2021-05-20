@@ -1,15 +1,22 @@
 <template>
   <div id="app">
-    <router-view name="userState" />
+    <userState />
     <div id="nav">
       <router-link to="/board">Home</router-link> |
-      <router-link to="/about">게시판</router-link>|
-      <router-link to="/userState">로그인</router-link>
+      <router-link to="/about">게시판</router-link>
     </div>
     <router-view />
   </div>
 </template>
-
+<script>
+import userState from "@/components/userState.vue";
+export default {
+  name: "app",
+  components: {
+    userState,
+  },
+};
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

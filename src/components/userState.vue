@@ -18,6 +18,7 @@
     <input type="text" v-model="signUp.address" />
     <br />
     <b-button @click="postsignUp">signUp</b-button>
+    {{ userInfo }}
   </div>
 </template>
 

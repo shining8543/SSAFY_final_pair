@@ -216,6 +216,7 @@ export default new Vuex.Store({
     .post("/user/login", payload)
     .then(({data})=>{
       console.log("로그인 성공");
+      console.log({data});
       context.commit("userInfo",{data});
     })
   },

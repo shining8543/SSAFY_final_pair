@@ -7,6 +7,7 @@ import BoardModify from "../views/modify.vue";
 import Board from "../views/board.vue";
 //import AptInfo from "../views/AptInfo.vue";
 import About from "../views/About.vue";
+import userState from "@/components/userState.vue";
 
 Vue.use(VueRouter);
 
@@ -47,6 +48,11 @@ const routes = [
     component: About,
 
     
+  },
+  {
+    path:"/userState",
+    name:"userState",
+    component:userState,
   }
 ];
 
