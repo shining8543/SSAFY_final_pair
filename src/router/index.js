@@ -5,6 +5,8 @@ import BoardRead from "../views/read.vue";
 import BoardWrite from "../views/write.vue";
 import BoardModify from "../views/modify.vue";
 import Board from "../views/board.vue";
+//import AptInfo from "../views/AptInfo.vue";
+import About from "../views/About.vue";
 
 Vue.use(VueRouter);
 
@@ -14,7 +16,7 @@ const routes = [
     path: "/board",
     name: "Board",
     component: Board,
-    //redirect:"board/list",
+    redirect:"board/list",
     children:[
       {
       path:"list",
@@ -39,6 +41,13 @@ const routes = [
       
     ],
   },
+  {
+    path: "/about",
+    name: "AptInfo",
+    component: About,
+
+    
+  }
 ];
 
 const router = new VueRouter({
