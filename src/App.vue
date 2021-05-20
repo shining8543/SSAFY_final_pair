@@ -1,9 +1,10 @@
 <template>
   <div id="app">
+    <router-view name="userState" />
     <div id="nav">
       <router-link to="/board">Home</router-link> |
-      <router-link to="/about">게시판</router-link>
-      
+      <router-link to="/about">게시판</router-link>|
+      <router-link to="/userState">로그인</router-link>
     </div>
     <router-view />
   </div>
