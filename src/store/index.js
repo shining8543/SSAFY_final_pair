@@ -95,7 +95,7 @@ export default new Vuex.Store({
     setAptCurPage(state, payload){
       state.curPage = payload;
     },
-    setaptInfos(state, payload) {
+    setAptInfos(state, payload) {
       state.aptInfos = payload.bList;
     }
 
@@ -123,6 +123,27 @@ export default new Vuex.Store({
       .then(({data})=>{
         context.commit("setBoard",data);
       })
+    },
+    getAptInfos(context, payload){
+      // this.board = "board";            
+      if ( payload.curPage== null) {
+        console.log("null");
+        payload.curPage = 1;
+      } 
+      boardhttp
+        .get("/mvhouseinfo?page=" + payload.curPage)
+        .then(({ data }) => {
+          console.log("getAptInfos");
+          context.commit("setBoards",data);
+          context.commit("setAptTotalPage",data.totalPage);
+          context.commit("setAptEndPage",data.endPage);
+          context.commit("setAptStartPage",data.startPage);
+          context.commit("setAptCurPage",payload.curPage);
+        })
+        .catch(() => {
+          alert("에러가 발생했습니다.");
+        });
+
     },
 
 
