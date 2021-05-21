@@ -1,6 +1,7 @@
 <template>
   <div>
     <table class="table table-striped">
+
       <tr>
         <th>제목</th>
         <th>작성자</th>

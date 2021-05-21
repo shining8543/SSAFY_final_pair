@@ -3,7 +3,6 @@
 <template>
   
   <div>
-
     <b-input-group>
   
       <b-dropdown text="Dropdown" variant="info">
@@ -32,7 +31,7 @@
         </tr>
 
       
-
+   
         <list-row v-for= "(board,idx) in boards" :key="idx" :board="board"></list-row>
          
      
@@ -93,7 +92,7 @@ export default {
   },
   data: function () {
     return {
-      board:[{curpage:"",}],
+      boarda:[{curpage:"",}],
       // items: [],
       // pages: [],
       // board: "",
@@ -101,17 +100,14 @@ export default {
     };
   },
   created() {
-    this.$store.dispatch("getBoards",this.board);// list들 받아오기 
+    this.$store.dispatch("getBoards",this.boarda);// list들 받아오기 
+    
     
   },
   computed : {
     ...mapGetters(['boards','startPage','endPage','curPage','totalPage']),
   
   },
-
-
-
-
   methods :{
     write(){
       this.$router.push("write");

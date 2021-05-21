@@ -1,6 +1,5 @@
 <template>
   <tr>
-  
     <td>{{ board.bwriter }}</td>
     <td>
      <router-link :to="`read?bnum=${board.bnum}`">{{ board.btitle }}</router-link> 
@@ -14,12 +13,6 @@ import moment from "moment";
 export default {
   name: "row",
   props: {
-    // userid: { type: String },
-    // title: { type: String },
-    // views: { type: Number },
-    // articleid: { type: Number },
-    // bregdate: { type: String },
-    // type: { type: String },
     board:{type:Object},
   },
   computed: {
