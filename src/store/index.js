@@ -1,12 +1,14 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import boardhttp from "@/util/Boardhttp.js";
+import tokenhttp from "@/util/Tokenhttp.js";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     userInfo:{},
+    token:"",
     board:{},
     boards:[],
     comment:{},
@@ -24,6 +26,9 @@ export default new Vuex.Store({
   getters:{
     boards(state){
       return state.boards;
+    },
+    token(state){
+      return state.token;
     },
     aptInfos(state) {
       return state.aptInfos;
@@ -103,7 +108,10 @@ export default new Vuex.Store({
       state.aptInfos = payload.bList;
     },
     setUserInfo(state,payload){
-      state.userInfo = payload.userInfo;
+      state.userInfo = payload;
+    },
+    setToken(state,payload){
+      state.token = payload;
     }
 
 
@@ -213,13 +221,52 @@ export default new Vuex.Store({
     
   login(context,payload){
     boardhttp
-    .post("/user/login", payload)
+    .post("/login", payload)
     .then(({data})=>{
-      console.log("로그인 성공");
-      console.log({data});
-      context.commit("userInfo",{data});
+      console.log("데이터 :" +JSON.stringify(data));
+      context.commit("setToken",data.token);
+      this.dispatch('getUser',payload);
     })
   },
+  getUser(context,payload){
+    boardhttp.defaults.headers['Authorization']="Bearer " + context.state.token;
+    console.log('um......');
+    boardhttp
+    .post("/getUser",payload)
+    .then(({data})=>{
+      context.commit("setUserInfo",data);
+      console.log("***"+context.state.userInfo);
+    })
+  },
+  signUp(context,payload){
+    console.log(payload);
+    boardhttp
+    .post("/signUp",payload)
+    .then(()=>{
+    });
+  },
+  modifyUser(context,payload){
+    tokenhttp.defaults.headers['Authorization']="Bearer " + context.state.token;
+    tokenhttp
+    .put("/modify",payload)
+    .then(({data})=>{
+      context.commit("setUserInfo",{data});
+    })
+  },
+  deleteUser(context){
+    tokenhttp.defaults.headers['Authorization']="Bearer " + context.state.token;
+    tokenhttp
+    .delete("/delete?userid=",context.state.userInfo.userId)
+    .then(()=>{
+      console.log(context.state.userInfo.userId);
+      context.commit("setUserInfo",null);
+      context.commit("setToken",null);
+    })
+  },
+  logout(context){
+    context.commit("setUserInfo",null);
+    context.commit("setToken",null);
+  }
 
 
     

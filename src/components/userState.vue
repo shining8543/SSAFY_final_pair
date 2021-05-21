@@ -13,12 +13,13 @@
       type="password"
       v-model="signUp.userPwd"
     />
-    name : <input type="name" v-model="signUp.name" /> email :
+    name : <input type="name" v-model="signUp.userName" /> email :
     <input type="text" v-model="signUp.email" /> address :
     <input type="text" v-model="signUp.address" />
     <br />
-    <b-button @click="postsignUp">signUp</b-button>
-    {{ userInfo }}
+    <b-button @click="postsignUp">signUp</b-button><br />
+    <b-button @click="logout">logout</b-button><br />
+    <b-button @click="userDelete">delete</b-button>
   </div>
 </template>
 
@@ -36,20 +37,22 @@ export default {
   created() {},
   methods: {
     postlogin() {
-      this.$store.dispatch("login", this.login).then(() => {
-        alert("환영합니다!");
-        console.log(this.userInfo);
-      });
+      this.$store.dispatch("login", this.login).then(() => {});
+      // this.$store.dispatch("getUser", this.login);
     },
     postsignUp() {
       this.$store.dispatch("signUp", this.signUp).then(() => {
         alert("회원가입 !");
       });
     },
-    logOut() {
+
+    logout() {
       this.$store.dispatch("logout").then(() => {
         alert("로그아웃 되었습니다 !");
       });
+    },
+    userDelete() {
+      this.$store.dispatch("deleteUser").then(() => {});
     },
   },
   computed: {
