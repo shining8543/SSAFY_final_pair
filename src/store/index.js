@@ -118,7 +118,7 @@ export default new Vuex.Store({
       state.token = payload;
     },
     setUsers(state, payload){
-      state.token = payload;
+      state.users = payload;
     }
 
 
@@ -273,7 +273,26 @@ export default new Vuex.Store({
   logout(context){
     context.commit("setUserInfo",null);
     context.commit("setToken",null);
-  }
+  },
+  getUserList(context){
+    tokenhttp.defaults.headers['Authorization']="Bearer " + context.state.token;
+    tokenhttp
+    .get("userlist")
+    .then(({data})=>{
+      console.log(data);
+      context.commit("setUsers",data);      
+
+    })
+  },
+  postUser(context,payload){
+    
+    tokenhttp.defaults.headers['Authorization']="Bearer " + context.state.token;
+    tokenhttp
+    .post("/admin",payload)
+    .then(()=>{
+      this.dispatch("getUserList");
+    })
+  },
 
 
     
