@@ -21,9 +21,9 @@
           지역
           {{ station }}
           <b-list-group-item
-            v-for="(item,idx) in station"
-            :value="item"
-            :key="idx"
+            v-for="item in station"
+            :value="item.val"
+            :key="item.id"
           >
             <a href="#">{{ item.val }}</a>
           </b-list-group-item>
@@ -127,83 +127,36 @@ export default {
       // }
       // markers = [];
     },
-
-
-    computed(){
-
-    },
-    methods: {
-        initMap() {
-            let container = document.getElementById('map');
-            let options = {
-                center: new kakao.maps.LatLng(37.566826, 126.9786567),
-                level: 3
-            };
-             container.style.width = '95%';
-            container.style.height = '1000px'; 
-
-            let map = new kakao.maps.Map(container, options);
-            let mapTypeControl = new kakao.maps.MapTypeControl();
-
-            map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
-
-            let zoomControl = new kakao.maps.ZoomControl();
-            map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-            this.map = map;
-        
-            this.geocoder = new kakao.maps.services.Geocoder();
-        },
-        removeMarker() {
-        // for ( var i = 0; i < markers.length; i++ ) {
-        //     markers[i].setMap(null);
-        // }   
-        // markers = [];
-         },
-         gethttp(query){
-             var bounds = new kakao.maps.LatLngBounds();
-
-        kakaohttp.get(`keyword.json?query=`+query).then(({ data }) => {
-            console.log(data+" data들어옴");
-            console.log(data);
-            let stationidx=0;
-            let aptidx=0;
-            let flag=false;
-            for ( var i=0;i<data.documents.length;i++){
-                 let types=(data.documents[i].category_name.split(" > "));
-                 if(types[0]=="교통,수송" && types[1]=="지하철,전철"){
-                    console.log("지하철입니다");
-                    this.station[stationidx++]=data.documents[i].place_name;
-                    this.displayMarker(data.documents[i]);   
-                    bounds.extend(new kakao.maps.LatLng(data.documents[i].y, data.documents[i].x));
-                    flag=true;
-                 }
-                 if(types[0]=="부동산" && types[1]=="주거시설"){
-                     if(types[2]=="오피스텔"){
-                         this.aptlist[aptidx++]=data.documents[i].place_name;
-                          this.displayMarker(data.documents[i]);   
-                    bounds.extend(new kakao.maps.LatLng(data.documents[i].y, data.documents[i].x));
-                        console.log("오피스텔입니다");
-                         flag=true;
-                     }
-                     if(types[2]=="아파트"){
-                         this.aptlist[aptidx++]=data.documents[i].place_name;
-                          this.displayMarker(data.documents[i]);   
-                    bounds.extend(new kakao.maps.LatLng(data.documents[i].y, data.documents[i].x));
-                          console.log("아파트입니다");
-                           flag=true;
-                     }
-                     else{
-                        this.displayMarker(data.documents[i]);   
-                        this.aptlist[aptidx++]=data.documents[i].place_name;
-                    bounds.extend(new kakao.maps.LatLng(data.documents[i].y, data.documents[i].x));
-                          console.log("기타시설입니다");
-                           flag=true;
-                     }
-                 }
-                if(flag){
-                    this.map.setBounds(bounds);
-                }
-
+    gethttp(query) {
+      var bounds = new kakao.maps.LatLngBounds();
+      kakaohttp.get(`keyword.json?query=` + query).then(({ data }) => {
+        console.log(data + " data들어옴");
+        console.log(data);
+        // let stationidx = 0;
+        let aptidx = 0;
+        let flag = false;
+        for (var i = 0; i < data.documents.length; i++) {
+          let types = data.documents[i].category_name.split(" > ");
+          if (types[0] == "교통,수송" && types[1] == "지하철,전철") {
+            this.$store.dispatch("getStation", data.documents[i].place_name);
+            console.log("지하철입니다");
+            //this.station[stationidx++] = data.documents[i].place_name;
+            this.displayMarker(data.documents[i]);
+            bounds.extend(
+              new kakao.maps.LatLng(data.documents[i].y, data.documents[i].x)
+            );
+            flag = true;
+            console.log(this.station);
+          }
+          if (types[0] == "부동산" && types[1] == "주거시설") {
+            if (types[2] == "오피스텔") {
+              this.aptlist[aptidx++] = data.documents[i].place_name;
+              this.displayMarker(data.documents[i]);
+              bounds.extend(
+                new kakao.maps.LatLng(data.documents[i].y, data.documents[i].x)
+              );
+              console.log("오피스텔입니다");
+              flag = true;
             }
             if (types[2] == "아파트") {
               this.aptlist[aptidx++] = data.documents[i].place_name;
