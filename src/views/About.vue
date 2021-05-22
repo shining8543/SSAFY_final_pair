@@ -17,6 +17,8 @@
             </b-form-input>
           </b-col>
         </b-row>
+        
+      <kakaomap :keyword="searchbar"></kakaomap>
 
         <table class="table">
           <tr>
@@ -30,7 +32,7 @@
 
     검색 :
     <input v-model.lazy="searchbar" placeholder="몬가" type="text" /><br />
-
+    
     <div id="dropdown">
       <div class="search-selec">
         <b-list-group>
@@ -74,9 +76,12 @@
 
 
 <script>
+import KakaoMaps from "@/components/KakaoMaps.vue";
 export default {
   name: "search",
-  components: {},
+  components: {
+      'kakaomap':KakaoMaps,
+  },
   data() {
     return {
       activate: false,
@@ -144,22 +149,6 @@ export default {
 };
 </script>
 <style>
-body {
-  font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
-  text-rendering: optimizelegibility;
-  -moz-osx-font-smoothing: grayscale;
-  -moz-text-size-adjust: none;
-}
-
-h1,
-.muted {
-  color: #2c3e5099;
-}
-
-h1 {
-  font-size: 26px;
-  font-weight: 600;
-}
 
 .search-selec {
   border: 1px solid red;

@@ -1,7 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import axios from 'axios';
 import boardhttp from "@/util/Boardhttp.js";
-import tokenhttp from "@/util/Tokenhttp.js";
+//import tokenhttp from "@/util/Tokenhttp.js";
 
 Vue.use(Vuex);
 
@@ -253,22 +254,30 @@ export default new Vuex.Store({
     });
   },
   modifyUser(context,payload){
-    tokenhttp.defaults.headers['Authorization']="Bearer " + context.state.token;
-    tokenhttp
+    //tokenhttp.defaults.headers['Authorization']="Bearer " + context.state.token;
+    boardhttp
     .put("/modify",payload)
     .then(({data})=>{
       context.commit("setUserInfo",{data});
     })
   },
   deleteUser(context){
-    tokenhttp.defaults.headers['Authorization']="Bearer " + context.state.token;
-    tokenhttp
-    .delete("/delete?userid=",context.state.userInfo.userId)
-    .then(()=>{
-      console.log(context.state.userInfo.userId);
-      context.commit("setUserInfo",null);
-      context.commit("setToken",null);
-    })
+    //boardhttp.defaults.headers['Authorization']="Bearer " + context.state.token;
+    const instance = axios.create();
+    instance.defaults.baseURL = 'http://localhost:9999/happyhouse';
+    instance.delete("/delete?userid=" + context.state.userInfo.userId).then(()=>{
+        console.log(context.state.userInfo.userId);
+        context.commit("setUserInfo",null);
+        context.commit("setToken",null);
+      })
+    
+    // boardhttp
+    // .delete("/delete?userid="+context.state.userInfo.userId)
+    // .then(()=>{
+    //   console.log(context.state.userInfo.userId);
+    //   context.commit("setUserInfo",null);
+    //   context.commit("setToken",null);
+    // })
   },
   logout(context){
     context.commit("setUserInfo",null);
