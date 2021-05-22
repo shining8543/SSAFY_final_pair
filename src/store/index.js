@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from 'axios';
 import boardhttp from "@/util/Boardhttp.js";
-//import tokenhttp from "@/util/Tokenhttp.js";
+import tokenhttp from "@/util/Tokenhttp.js";
 
 Vue.use(Vuex);
 
@@ -24,6 +24,7 @@ export default new Vuex.Store({
     aptTotalPage:"",
     aptCurPage: "",
     users:[],
+    station:[],
   },
   getters:{
     boards(state){
@@ -73,6 +74,9 @@ export default new Vuex.Store({
     },
     users(state){
       return state.users;
+    },
+    station(state){
+      return state.station;
     }
     
   },
@@ -119,7 +123,10 @@ export default new Vuex.Store({
       state.token = payload;
     },
     setUsers(state, payload){
-      state.token = payload;
+      state.users = payload;
+    },
+    setStation(state, payload){
+      state.station = payload;
     }
 
 
@@ -282,8 +289,30 @@ export default new Vuex.Store({
   logout(context){
     context.commit("setUserInfo",null);
     context.commit("setToken",null);
-  }
+  },
+  getUserList(context){
+    tokenhttp.defaults.headers['Authorization']="Bearer " + context.state.token;
+    tokenhttp
+    .get("userlist")
+    .then(({data})=>{
+      console.log(data);
+      context.commit("setUsers",data);      
 
+    })
+  },
+  postUser(context,payload){
+    
+    tokenhttp.defaults.headers['Authorization']="Bearer " + context.state.token;
+    tokenhttp
+    .post("/admin",payload)
+    .then(()=>{
+      this.dispatch("getUserList");
+    })
+  },
+  getStation(context, payload){
+    console.log(payload);
+    context.commit("setStation",payload);
+  }
 
     
     // getFormatDate(regtime) {
