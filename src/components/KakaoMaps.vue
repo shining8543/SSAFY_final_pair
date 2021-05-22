@@ -13,9 +13,9 @@
           지역
           {{station}}
           <b-list-group-item
-            v-for="item in station"
-            :value="item.val"
-            :key="item.id"
+            v-for="(item,idx) in station"
+            :value="item"
+            :key="idx"
           >
             <a href="#">{{ item.val }}</a>
           </b-list-group-item>
@@ -98,6 +98,10 @@ export default {
             script.src = 'http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=9d6d9c836fdd9dfd231ba53333f388e3&libraries=services';
             document.head.appendChild(script);
         }
+    },
+
+    computed(){
+
     },
     methods: {
         initMap() {
