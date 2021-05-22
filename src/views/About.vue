@@ -150,7 +150,6 @@ export default {
 </script>
 <style>
 
-
 .search-selec {
   border: 1px solid red;
   display: inline-block;

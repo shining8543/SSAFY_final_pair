@@ -4,7 +4,7 @@
     <div id="nav">
       <router-link to="/board">Home</router-link> |
       <router-link to="/about">게시판</router-link>|
-      <router-link to="/test">테스트</router-link>
+      <router-link to="/adminPage">테스트</router-link>
     </div>
     <router-view />
   </div>
