@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from 'axios';
 import boardhttp from "@/util/Boardhttp.js";
-//import tokenhttp from "@/util/Tokenhttp.js";
+import tokenhttp from "@/util/Tokenhttp.js";
 
 Vue.use(Vuex);
 
@@ -24,6 +24,7 @@ export default new Vuex.Store({
     aptTotalPage:"",
     aptCurPage: "",
     users:[],
+    station:[],
   },
   getters:{
     boards(state){
@@ -73,6 +74,9 @@ export default new Vuex.Store({
     },
     users(state){
       return state.users;
+    },
+    station(state){
+      return state.station;
     }
     
   },
@@ -120,6 +124,9 @@ export default new Vuex.Store({
     },
     setUsers(state, payload){
       state.users = payload;
+    },
+    setStation(state, payload){
+      state.station = payload;
     }
 
 
@@ -302,7 +309,10 @@ export default new Vuex.Store({
       this.dispatch("getUserList");
     })
   },
-
+  getStation(context, payload){
+    console.log(payload);
+    context.commit("setStation",payload);
+  }
 
     
     // getFormatDate(regtime) {
