@@ -22,6 +22,7 @@ export default new Vuex.Store({
     aptEndPage:"",
     aptTotalPage:"",
     aptCurPage: "",
+    users:[],
   },
   getters:{
     boards(state){
@@ -68,6 +69,9 @@ export default new Vuex.Store({
     },
     userInfo(state){
       return state.userInfo;
+    },
+    users(state){
+      return state.users;
     }
     
   },
@@ -111,6 +115,9 @@ export default new Vuex.Store({
       state.userInfo = payload;
     },
     setToken(state,payload){
+      state.token = payload;
+    },
+    setUsers(state, payload){
       state.token = payload;
     }
 

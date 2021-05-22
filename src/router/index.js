@@ -6,6 +6,7 @@ import BoardWrite from "../views/write.vue";
 import BoardModify from "../views/modify.vue";
 import Board from "../views/board.vue";
 import Test from "@/views/test.vue";
+import AdminPage from "@/views/adminPage.vue";
 //import AptInfo from "../views/AptInfo.vue";
 import About from "../views/About.vue";
 import userState from "@/components/userState.vue";
@@ -59,6 +60,11 @@ const routes = [
     path:"/test",
     name:"test",
     component:Test,
+  },
+  {
+    path:"/adminPage",
+    name:"adminPage",
+    component:AdminPage
   }
 ];
 

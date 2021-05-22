@@ -161,15 +161,6 @@ h1 {
   font-weight: 600;
 }
 
-#app {
-  max-width: 30em;
-  margin: 1em auto;
-}
-#dropdown {
-  border: 1px solid grey;
-  flex: 1;
-}
-
 .search-selec {
   border: 1px solid red;
   display: inline-block;
