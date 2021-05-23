@@ -1,11 +1,11 @@
 
 <template>
 <div>
-  {{aptInfos}}
-  	<div v-if="aptInfos">
+  
+  	<div v-if="aptInfos.bList.length==0">
 				<div class=" bd-sidebar">
-					<h4 class="mt-2 font-weight-bold">매매 정보</h4>
-					<ul class="nav" id="sidebar_deal_list mt-5">
+					<h4 class=" font-weight-bold">매매 정보</h4>
+					<ul class="nav" id="sidebar_deal_list ">
 						<li class="border"><a>해당하는 건물이 없습니다.<br> <br>
 						</a></li>
 					</ul>
@@ -13,13 +13,21 @@
 				</div>
             </div>
     <div v-else>
-    <h4 class="mt-2 font-weight-bold">매매 정보</h4>
-					<ul class="nav" id="sidebar_deal_list mt-5">
-						
-							<apt-row v-for="(apt,idx) in aptInfos" :key="idx" :apt="apt">
+    <h4 class=" font-weight-bold">매매 정보</h4>
+				
+             <table class="table table-bordered table-condensed">
+                <!-- <colgroup>
+                  <col :style="{ width: '30%' }" />
+                  <col :style="{ width: '50%' }" />
+                  <col :style="{ width: '20%' }" />
+            </colgroup> -->
+            <tr>
+             
+            </tr>
+							<apt-row v-for="(apt,idx) in aptInfos.bList" :key="idx" :apt="apt">
 							</apt-row>
-					
-					</ul>
+              </table>
+				
     </div>
 
 </div>		

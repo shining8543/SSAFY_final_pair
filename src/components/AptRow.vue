@@ -1,6 +1,6 @@
 <template>
+
   <tr>
-  DONG, APTNAME as name, BUILDYEAR, DEALYEAR, JIBUN, DEALAMOUNT
     <td>{{ apt.dong }}</td>
       <td>{{ apt.name }}</td>
        <td>{{ apt.buildYear }}</td>

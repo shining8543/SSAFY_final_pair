@@ -1,6 +1,7 @@
 <template>
   <div id="makemap">    
-   <apt-info id="deal" aptInfos="deallist" > </apt-info>
+    
+   <apt-info id="deal" :aptInfos="deallist" > </apt-info>
     <div id="map"></div>
    
     <div>
