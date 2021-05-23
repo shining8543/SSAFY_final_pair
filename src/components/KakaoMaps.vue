@@ -2,7 +2,7 @@
   <div id="makemap">    
    <apt-info id="deal" aptInfos="deallist" > </apt-info>
     <div id="map"></div>
-
+   
     <div>
       <form @submit.prevent="searchPlaces(keyword)">
         키워드 :

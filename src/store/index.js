@@ -80,7 +80,7 @@ export default new Vuex.Store({
       return state.station;
     },
     deallist(state) {
-      return state.getdeallist;
+      return state.deallist;
     }
     
   },

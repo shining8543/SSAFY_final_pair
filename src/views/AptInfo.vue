@@ -1,8 +1,9 @@
 
 <template>
 <div>
-  	<div v-if="aptInfos.length==0">
-				<div class="col-3 bd-sidebar">
+  {{aptInfos}}
+  	<div v-if="aptInfos">
+				<div class=" bd-sidebar">
 					<h4 class="mt-2 font-weight-bold">매매 정보</h4>
 					<ul class="nav" id="sidebar_deal_list mt-5">
 						<li class="border"><a>해당하는 건물이 없습니다.<br> <br>
@@ -30,25 +31,27 @@
 <script>
 
 
-import { mapGetters } from 'vuex';
+//import { mapGetters } from 'vuex';
 import AptRow from '../components/AptRow.vue';
 export default {
   name: "list",
   components: {
     AptRow,
   },
-  
+   props: {
+    aptInfos:{type:Object},
+  },
     AptRowdata: function () {
     return {
       apt:[{curpage:"",}],
     };
   },
   created() {
-    this.$store.dispatch("getAptInfo",this.apt);// list들 받아오기 
+    //this.$store.dispatch("getAptInfo",this.apt);// list들 받아오기 
     
   },
   computed : {
-    ...mapGetters(['aptInfos','aptStartPage','aptEndPage','aptCurPage','aptTotalPage']),
+   // ...mapGetters(['aptInfos','aptStartPage','aptEndPage','aptCurPage','aptTotalPage']),
   
   },
 
