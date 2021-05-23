@@ -1,7 +1,8 @@
 <template>
-  <div id="makemap">
-    {{ station.length }}
+  <div id="makemap">    
+   <apt-info id="deal" aptInfos="deallist" > </apt-info>
     <div id="map"></div>
+
     <div>
       <form @submit.prevent="searchPlaces(keyword)">
         키워드 :
@@ -24,7 +25,7 @@
             :value="item"
             :key="idx"
           >
-            <a href="#">{{ item }}</a>
+            <a href="#" @click="getdeallist(item.address_name)">{{ item.place_name }}</a>
           </b-list-group-item>
         </b-list-group>
       </div>
@@ -36,7 +37,7 @@
             :value="item"
             :key="idx"
           >
-            <a href="#">{{ item }}</a>
+            <a href="#"  @click="getdeallist(item.address_name)">{{ item.place_name }}</a>
           </b-list-group-item>
         </b-list-group>
       </div>
@@ -48,7 +49,7 @@
             :value="item.val"
             :key="item.id"
           >
-            <a href="#">{{ item.val }}</a>
+            <a href="#"  @click="getdeallist(item.address_name)"  >{{item.place_name  }}</a>
           </b-list-group-item>
         </b-list-group>
       </div>
@@ -57,10 +58,14 @@
 </template>
 <script>
 import kakaohttp from "../util/kakaohttp";
+import AptInfo from "../views/AptInfo"
 import { mapGetters } from "vuex";
 export default {
   name: "app",
   props: ["keyword"],
+  components : {
+    AptInfo,
+  },
   data() {
     return {
       map: null,
@@ -100,16 +105,18 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["station"]),
+    ...mapGetters(["station","deallist"]),
   },
   methods: {
+
+
     initMap() {
       let container = document.getElementById("map");
       let options = {
         center: new kakao.maps.LatLng(37.566826, 126.9786567),
         level: 3,
       };
-      container.style.width = "95%";
+      container.style.width = "60%";
       container.style.height = "1000px";
 
       let map = new kakao.maps.Map(container, options);
@@ -149,12 +156,13 @@ export default {
         let stationidx = 0;
         let aptidx = 0;
         let flag = false;
+        console.log(data.documents);
         for (var i = 0; i < data.documents.length; i++) {
           let types = data.documents[i].category_name.split(" > ");
           if (types[0] == "교통,수송" && types[1] == "지하철,전철") {
            
             console.log("지하철입니다");
-            this.station_temp[stationidx++] = data.documents[i].place_name;
+            this.station_temp[stationidx++] = {"palce_name":data.documents[i].place_name,"address_name": data.documents[i].address_name};
             this.displayMarker(data.documents[i]);
             bounds.extend(
               new kakao.maps.LatLng(data.documents[i].y, data.documents[i].x)
@@ -164,7 +172,7 @@ export default {
           }
           if (types[0] == "부동산" && types[1] == "주거시설") {
             if (types[2] == "오피스텔") {
-              this.aptlist[aptidx++] = data.documents[i].place_name;
+              this.aptlist[aptidx++] ={"place_name":data.documents[i].place_name,"address_name": data.documents[i].address_name};
               this.displayMarker(data.documents[i]);
               bounds.extend(
                 new kakao.maps.LatLng(data.documents[i].y, data.documents[i].x)
@@ -173,7 +181,7 @@ export default {
               flag = true;
             }
             if (types[2] == "아파트") {
-              this.aptlist[aptidx++] = data.documents[i].place_name;
+              this.aptlist[aptidx++] = {"place_name":data.documents[i].place_name,"address_name": data.documents[i].address_name};
               this.displayMarker(data.documents[i]);
               bounds.extend(
                 new kakao.maps.LatLng(data.documents[i].y, data.documents[i].x)
@@ -182,7 +190,7 @@ export default {
               flag = true;
             } else {
               this.displayMarker(data.documents[i]);
-              this.aptlist[aptidx++] = data.documents[i].place_name;
+              this.aptlist[aptidx++] = {"place_name":data.documents[i].place_name,"address_name": data.documents[i].address_name};
               bounds.extend(
                 new kakao.maps.LatLng(data.documents[i].y, data.documents[i].x)
               );
@@ -274,8 +282,21 @@ export default {
     //         }
     //     });
     // }
+    getdeallist(item){
+      console.log(item);
+      
+      this.$store.dispatch("getdeallist", item);
+    }
   },
 };
 </script>
 <style>
+#deal{
+  float:left;
+  width:30%;
+height: 1000px;
+}
+#map{
+
+}
 </style>
