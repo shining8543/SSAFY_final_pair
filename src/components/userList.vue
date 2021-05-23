@@ -7,30 +7,30 @@
     <td>{{ user.address }}</td>
     <td>{{ getFormatDate(user.joindate) }}</td>
     <td>
-      <b-button variant="info" @click="modifyBtn">수정</b-button>
-      <b-button variant="danger">삭제</b-button>
+      <b-button variant="info" @click="modifyOnBtn">수정</b-button>
+      <b-button variant="danger" @click="deleteBtn">삭제</b-button>
     </td>
   </tr>
   <tr v-else>
     <td>{{ user.userId }}</td>
     <td>
-      <input type="text" value="{user.userPwd}" v-model="modify_user.userPwd" />
+      <input type="text" v-model="modify_user.userPwd" />
     </td>
     <td>
-      <input type="text" value="user.userName" />
+      <input type="text" v-model="modify_user.userName" />
     </td>
     <td>
-      <input type="text" value="user.email" v-model="modify_user.email" />
+      <input type="text" v-model="modify_user.email" />
     </td>
     <td>
-      <input type="text" value="user.address" v-model="modify_user.address" />
+      <input type="text" v-model="modify_user.address" />
     </td>
     <td>
-      <input type="text" value="user.joindate" v-model="modify_user.joindate" />
+      <input type="text" v-model="modify_user.joindate" />
     </td>
     <td>
       <b-button variant="info" @click="putUser">수정</b-button>
-      <b-button variant="danger" @click="modifyBtn">취소</b-button>
+      <b-button variant="danger" @click="modifyOffBtn">취소</b-button>
     </td>
   </tr>
 </template>
@@ -42,6 +42,13 @@ export default {
     return {
       isModify: "false",
       modify_user: {},
+      now_select: {
+        userId: "",
+        userPwd: "",
+        userName: "",
+        email: "",
+        address: "",
+      },
     };
   },
   name: "userlist",
@@ -52,11 +59,40 @@ export default {
     getFormatDate(regtime) {
       return moment(new Date(regtime)).format("YYYY.MM.DD");
     },
-    modifyBtn() {
-      console.log("modify try");
+    modifyOnBtn() {
+      this.modify_user = this.user;
+      this.now_select.userId = this.modify_user.userId;
+      this.now_select.userPwd = this.modify_user.userPwd;
+      this.now_select.userName = this.modify_user.userName;
+      this.now_select.email = this.modify_user.email;
+      this.now_select.address = this.modify_user.address;
+
       this.isModify = !this.isModify;
     },
-    putUser() {},
+    modifyOffBtn() {
+      this.modify_user.userId = this.now_select.userId;
+      this.modify_user.userPwd = this.now_select.userPwd;
+      this.modify_user.userName = this.now_select.userName;
+      this.modify_user.email = this.now_select.email;
+      this.modify_user.address = this.now_select.address;
+
+      this.isModify = !this.isModify;
+    },
+    putUser() {
+      if (
+        this.modify_user.userPwd == null ||
+        this.modify_user.userName == null
+      ) {
+        alert("필수항목을 모두 채워주세요");
+        return;
+      }
+
+      //this.$state.dispatch("putUser",this.modify_user);
+      alert("수정 완료");
+    },
+    deleteBtn() {
+      this.$state.dispatch("deleteUser", modify_user);
+    },
   },
 };
 </script>
