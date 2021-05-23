@@ -25,6 +25,7 @@ export default new Vuex.Store({
     aptCurPage: "",
     users:[],
     station: {},
+    deallist: {},
   },
   getters:{
     boards(state){
@@ -77,6 +78,9 @@ export default new Vuex.Store({
     },
     station(state){
       return state.station;
+    },
+    deallist(state) {
+      return state.getdeallist;
     }
     
   },
@@ -127,6 +131,9 @@ export default new Vuex.Store({
     },
     setStation(state, payload){
       state.station = payload;
+    },
+    setDealList(state, payload) {
+      state.deallist = payload;
     }
 
 
@@ -314,7 +321,15 @@ export default new Vuex.Store({
     console.log(payload);
     console.log("payload 들옴");
     context.commit("setStation",payload);
-  }
+    },
+    getdeallist(context, payload) {
+      boardhttp.get("house/searchtype?type=1&area="+payload).then(({ data }) => {
+        context.commit("setDealList",data);
+      })
+      .catch(() => {
+        alert("에러가 발생했습니다.");
+      });
+    }
 
     
     // getFormatDate(regtime) {
