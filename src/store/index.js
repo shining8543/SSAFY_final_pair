@@ -24,7 +24,7 @@ export default new Vuex.Store({
     aptTotalPage:"",
     aptCurPage: "",
     users:[],
-    station:[],
+    station: {},
   },
   getters:{
     boards(state){
@@ -309,8 +309,10 @@ export default new Vuex.Store({
       this.dispatch("getUserList");
     })
   },
-  getStation(context, payload){
+    getStation(context, payload) {
+      console.log(context);
     console.log(payload);
+    console.log("payload 들옴");
     context.commit("setStation",payload);
   }
 

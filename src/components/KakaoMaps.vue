@@ -19,13 +19,12 @@
       <div class="search-selec">
         <b-list-group>
           지역
-          {{ station }}
           <b-list-group-item
-            v-for="item in station"
-            :value="item.val"
-            :key="item.id"
+            v-for=" (item,idx) in station"
+            :value="item"
+            :key="idx"
           >
-            <a href="#">{{ item.val }}</a>
+            <a href="#">{{ item }}</a>
           </b-list-group-item>
         </b-list-group>
       </div>
@@ -33,11 +32,11 @@
         <b-list-group>
           매물
           <b-list-group-item
-            v-for="item in aptlist"
-            :value="item.val"
-            :key="item.id"
+            v-for="(item,idx) in aptlist"
+            :value="item"
+            :key="idx"
           >
-            <a href="#">{{ item.val }}</a>
+            <a href="#">{{ item }}</a>
           </b-list-group-item>
         </b-list-group>
       </div>
@@ -66,12 +65,14 @@ export default {
     return {
       map: null,
       geocoder: null,
+      markers:[],
       search: "",
       user: "",
       country: 0,
       searchbar: "",
       input: "",
       // station: {},
+      station_temp:{},
       aptlist: {},
       area: {},
       options: [
@@ -122,25 +123,39 @@ export default {
       this.geocoder = new kakao.maps.services.Geocoder();
     },
     removeMarker() {
-      // for ( var i = 0; i < markers.length; i++ ) {
-      //     markers[i].setMap(null);
-      // }
-      // markers = [];
+    
+      console.log("remvoe marker");
+      console.log(this.markers)
+       var marker = new kakao.maps.Marker({
+        map: this.map,
+  
+      });
+      console.log(marker);
+      for ( var i = 0; i <marker.length; i++ ) {
+          marker[i].setMap(null);
+      }
+      this.markers = [];
+      console.log(this.markers +" 지움 ");
+
     },
     gethttp(query) {
+      this.removeMarker();
+      this.$store.dispatch("getStation", {});
+      this.aptlist={};
+      this.station_temp={};
       var bounds = new kakao.maps.LatLngBounds();
       kakaohttp.get(`keyword.json?query=` + query).then(({ data }) => {
         console.log(data + " data들어옴");
         console.log(data);
-        // let stationidx = 0;
+        let stationidx = 0;
         let aptidx = 0;
         let flag = false;
         for (var i = 0; i < data.documents.length; i++) {
           let types = data.documents[i].category_name.split(" > ");
           if (types[0] == "교통,수송" && types[1] == "지하철,전철") {
-            this.$store.dispatch("getStation", data.documents[i].place_name);
+           
             console.log("지하철입니다");
-            //this.station[stationidx++] = data.documents[i].place_name;
+            this.station_temp[stationidx++] = data.documents[i].place_name;
             this.displayMarker(data.documents[i]);
             bounds.extend(
               new kakao.maps.LatLng(data.documents[i].y, data.documents[i].x)
@@ -176,10 +191,13 @@ export default {
               flag = true;
             }
           }
-          if (flag) {
-            this.map.setBounds(bounds);
-          }
+  
+
         }
+         if (flag) {
+            this.map.setBounds(bounds);
+            this.$store.dispatch("getStation", this.station_temp);
+          }
 
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
       });
@@ -222,12 +240,14 @@ export default {
       var infowindow = new kakao.maps.InfoWindow({
         zIndex: 1,
         content:
-          '<div @click: style="padding:5px;font-size:12px;">' +
+          '<div @click: style="padding:5px; font-size:12px;">' +
           place.place_name +
           "</div>",
       });
+      //this.markers=marker;
       // 마커에 클릭이벤트를 등록합니다
       infowindow.open(this.map, marker);
+      this.markers.push(marker);
 
       //     kakao.maps.event.addListener(marker, 'click', ()=> {
       //         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
