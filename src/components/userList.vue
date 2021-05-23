@@ -91,7 +91,7 @@ export default {
       alert("수정 완료");
     },
     deleteBtn() {
-      this.$state.dispatch("deleteUser", modify_user);
+      //this.$state.dispatch("deleteUser", this.modify_user);
     },
   },
 };
