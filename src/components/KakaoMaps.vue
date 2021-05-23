@@ -125,14 +125,10 @@ export default {
     removeMarker() {
     
       console.log("remvoe marker");
-      console.log(this.markers)
-       var marker = new kakao.maps.Marker({
-        map: this.map,
-  
-      });
-      console.log(marker);
-      for ( var i = 0; i <marker.length; i++ ) {
-          marker[i].setMap(null);
+
+      console.log(this.markers);
+      for ( var i = 0; i <this.markers.length; i++ ) {
+          this.markers[i].setMap(null);
       }
       this.markers = [];
       console.log(this.markers +" 지움 ");
