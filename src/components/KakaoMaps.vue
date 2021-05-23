@@ -66,6 +66,7 @@ export default {
       map: null,
       geocoder: null,
       markers:[],
+      infowindows:[],
       search: "",
       user: "",
       country: 0,
@@ -129,8 +130,10 @@ export default {
       console.log(this.markers);
       for ( var i = 0; i <this.markers.length; i++ ) {
           this.markers[i].setMap(null);
+          this.infowindows[i].setMap(null);
       }
       this.markers = [];
+      this.infowindows=[];
       console.log(this.markers +" 지움 ");
 
     },
@@ -244,6 +247,7 @@ export default {
       // 마커에 클릭이벤트를 등록합니다
       infowindow.open(this.map, marker);
       this.markers.push(marker);
+      this.infowindows.push(infowindow);
 
       //     kakao.maps.event.addListener(marker, 'click', ()=> {
       //         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
