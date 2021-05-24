@@ -103,7 +103,6 @@ export default {
   },
   created() {
     this.$store.dispatch("getUserList");
-    console.log(this.$store.users);
   },
 
   computed: {

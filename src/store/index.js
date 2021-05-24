@@ -1,10 +1,12 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import VueSession from 'vue-session';
 import boardhttp from "@/util/Boardhttp.js";
 import tokenhttp from "@/util/Tokenhttp.js";
 
-Vue.use(Vuex);
 
+Vue.use(Vuex);
+Vue.use(VueSession);
 export default new Vuex.Store({
   state: {
     userInfo:{},
@@ -25,6 +27,7 @@ export default new Vuex.Store({
     users:[],
     station: {},
     deallist: {},
+    isLogin:"",
   },
   getters:{
     boards(state){
@@ -80,6 +83,9 @@ export default new Vuex.Store({
     },
     deallist(state) {
       return state.deallist;
+    },
+    isLogin(state){
+      return state.isLogin;
     }
     
   },
@@ -133,8 +139,13 @@ export default new Vuex.Store({
     },
     setDealList(state, payload) {
       state.deallist = payload;
-    }
-
+    },
+    setIsLoginTrue(state){
+      state.isLogin = true;
+    },
+    setIsLoginfalse(state){
+      state.isLogin = false;
+    },
 
   },
   actions: {
@@ -239,24 +250,31 @@ export default new Vuex.Store({
         alert("modify error");
       })
     },
-    
+  setToken(context,payload){
+    context.commit("setToken",payload);
+  },
   login(context,payload){
     boardhttp
     .post("/login", payload)
     .then(({data})=>{
       console.log("데이터 :" +JSON.stringify(data));
       context.commit("setToken",data.token);
+      context.commit("setIsLoginTrue");
+      boardhttp.defaults.headers['Authorization']="Bearer " + context.state.token;
+      console.log(context.state.isLogin);
       this.dispatch('getUser',payload);
+      Vue.prototype.$session.set("token",data.token);
     })
   },
   getUser(context,payload){
-    boardhttp.defaults.headers['Authorization']="Bearer " + context.state.token;
-    console.log('um......');
-    boardhttp
+    console.log(payload);
+    tokenhttp.defaults.headers['Authorization']="Bearer " + context.state.token;
+    tokenhttp
     .post("/getUser",payload)
     .then(({data})=>{
       context.commit("setUserInfo",data);
       console.log("***"+context.state.userInfo);
+      Vue.prototype.$session.set("loginId",data.userId);
     })
   },
   signUp(context,payload){
@@ -275,17 +293,37 @@ export default new Vuex.Store({
     })
   },
   deleteUser(context){
-    boardhttp
-    .delete("/delete?userid="+context.state.userInfo.userId)
+    //tokenhttp.defaults.headers['Authorization']="Bearer " + context.state.token;
+    tokenhttp
+    .delete("/delete?userId="+context.state.userInfo.userId)
     .then(()=>{
       console.log(context.state.userInfo.userId);
       context.commit("setUserInfo",null);
       context.commit("setToken",null);
+      this.dispatch('logout');
+      
     })
   },
   logout(context){
     context.commit("setUserInfo",null);
     context.commit("setToken",null);
+    context.commit("setIsLoginFalse");
+    Vue.prototype.$session.remove("token");
+    Vue.prototype.$session.remove("loginId");
+  },
+  getLoginState(context){
+    let loginId ={};
+    loginId.userId =  Vue.prototype.$session.get("loginId");
+    let token =  Vue.prototype.$session.get("token");
+
+    tokenhttp.defaults.headers['Authorization']="Bearer " + token;
+
+    if(loginId != null && token != null){
+      context.commit("setIsLoginTrue");
+      context.commit("setToken",token);
+      this.dispatch("setToken",token);      
+      this.dispatch('getUser',loginId);
+    }
   },
   getUserList(context){
     tokenhttp.defaults.headers['Authorization']="Bearer " + context.state.token;
@@ -326,7 +364,7 @@ export default new Vuex.Store({
     })
   },
     getStation(context, payload) {
-      console.log(context);
+    console.log(context);
     console.log(payload);
     console.log("payload 들옴");
     context.commit("setStation",payload);

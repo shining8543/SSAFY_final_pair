@@ -1,12 +1,24 @@
 <template>
   <div id="app">
-    <userState />
-    <div id="nav">
-      <router-link to="/board">Home</router-link> |
-      <router-link to="/about">게시판</router-link>|
-      <router-link to="/adminPage">테스트</router-link>
+    <div id="loginSpace">
+      <userState class="mt-3 mr-3" />
     </div>
-    <router-view />
+    <b-navbar toggleable="lg" type="dark" variant="dark">
+      <b-navbar-brand href="#">HappyHouse</b-navbar-brand>
+
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
+          <b-nav-item rounter-link to="/board">게시판</b-nav-item>
+          <b-nav-item rounter-link to="/about">매물 정보</b-nav-item>
+          <b-nav-item rounter-link to="/adminPage">회원 관리</b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
+    <div class="mt-3">
+      <router-view />
+    </div>
   </div>
 </template>
 <script>
@@ -38,5 +50,8 @@ export default {
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+#loginSpace {
+  text-align: right;
 }
 </style>
