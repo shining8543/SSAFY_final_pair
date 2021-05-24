@@ -85,7 +85,8 @@ export default {
       area: {},
       swLatlng:0,
       neLatlng:0,
-
+      placesxy:[],
+      clickdeallist:[],
       options: [
         "Yogesh singh",
         "Sunil singh",
@@ -137,7 +138,9 @@ export default {
       let zoomControl = new kakao.maps.ZoomControl();
       map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
       this.map = map;
-      kakao.maps.event.addListener(map, 'bounds_changed', ()=> {             
+
+
+      kakao.maps.event.addListener(map, 'dragend', ()=> {             
     
         // 지도 영역정보를 얻어옵니다 
         var bounds = map.getBounds();
@@ -154,6 +157,9 @@ export default {
         
 
         this.matcharea();
+        this.showstation();
+        this.showdeallist();
+        
 
         var resultDiv = document.getElementById('result');   
         resultDiv.innerHTML = message;
@@ -168,7 +174,8 @@ export default {
      let swma=(this.swLatlng.Ma);
       boardhttp.get("/house/matcharea?swLat="+swma+"&swlng="+swla+"&neLat="+nema+"&nelng="+nela)
       .then(({ data }) => {
-        console.log(data);
+        this.showdeallist(data);
+        
       })
   
 
@@ -190,7 +197,56 @@ export default {
       console.log(this.markers +" 지움 ");
 
     },
-    gethttp(query) {
+
+
+
+    showdeallist(areadata){
+      console.log(areadata);
+     // this.removeMarker();
+      for(let key in areadata) {
+        // for(let i=0; i<data[key].length;i++){
+        //  kakaohttp.get(`keyword.json?query=` + data[key][i].dong +" "+data[key][i].name).then(({ markerposition }) => {
+        //    if(markerposition.documents.length!=0){
+        //       console.log(markerposition.documents);
+        //         break;
+        //    }
+ 
+        // });
+          let nela=this.neLatlng.La;
+       let swla =this.swLatlng.La;
+      let nema=(this.neLatlng.Ma);
+     let swma=(this.swLatlng.Ma);
+        let searchquery= areadata[key][0].dong +" "+areadata[key][0].name.replace("("," ").replace(")"," ");
+
+         kakaohttp.get(`keyword.json?query=` + searchquery).then(({ data }) => {
+              if(data.documents.length>0){
+                    let types = data.documents[0].category_name.split(" > ");
+                   if(searchquery.includes(data.documents[0].place_name)  && types[0] == "부동산" && types[1] == "주거시설"){
+                     if(nela>=data.documents[0].x&&swla<=data.documents[0].x && nema>=data.documents[0].y && swma<=data.documents[0].y){
+                        this.displayMarkerclick(data.documents[0],areadata[key] );
+                        
+                     }
+                   }
+
+                   }
+              });
+      }
+
+   
+
+
+      // kakaohttp.get(`keyword.json?query=` + query).then(({ data }) => {
+
+       //});
+
+    },
+    showstation(){
+
+    }
+
+    
+
+    ,gethttp(query) {
       this.removeMarker();
       this.$store.dispatch("getStation", {});
       this.aptlist={};
@@ -283,8 +339,12 @@ export default {
       }
     },
 
-    displayMarker(place) {
+
+
+
+     displayMarkerclick(place,deallist) {
       // 마커를 생성하고 지도에 표시합니다
+      console.log(deallist);
       var marker = new kakao.maps.Marker({
         map: this.map,
         position: new kakao.maps.LatLng(place.y, place.x),
@@ -293,15 +353,79 @@ export default {
       var infowindow = new kakao.maps.InfoWindow({
         zIndex: 1,
         content:
-          '<div @click: style="padding:5px; font-size:12px;">' +
+          `<div id="temp" @click="getdeallist(deallist)" style="padding:5px; font-size:12px;">
+          ${place.place_name} 
+          </div>`,
+      });
+      //this.markers=marker;
+      // 마커에 클릭이벤트를 등록합니다
+      let latlng= place.y+" "+place.x;
+      if (!this.placesxy.includes(latlng)){
+         //infowindow.open(this.map, marker);
+         this.markers.push(marker);
+        this.infowindows.push(infowindow);
+
+          infowindow.open(this.map, marker);  
+          kakao.maps.event.addListener(marker, 'click', ()=> {
+          // 마커 위에 인포윈도우를 표시합니다
+         
+          this.getdeallist(deallist)
+
+    });
+
+//  kakao.maps.event.addListener(marker, 'dbclick', ()=> {
+//       // 마커 위에 인포윈도우를 표시합니다
+//       infowindow.close(this.map, marker)});  
+
+
+
+      };
+     },
+
+
+
+    displayMarker(place) {
+      // 마커를 생성하고 지도에 표시합니다
+
+      var marker = new kakao.maps.Marker({
+        map: this.map,
+        position: new kakao.maps.LatLng(place.y, place.x),
+      });
+      //  var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+      var infowindow = new kakao.maps.InfoWindow({
+        zIndex: 1,
+        content:
+          '<div style="padding:5px; font-size:12px;">' +
           place.place_name +
           "</div>",
       });
       //this.markers=marker;
       // 마커에 클릭이벤트를 등록합니다
-      infowindow.open(this.map, marker);
-      this.markers.push(marker);
-      this.infowindows.push(infowindow);
+      let latlng= place.y+" "+place.x;
+      if (!this.placesxy.includes(latlng)){
+         //infowindow.open(this.map, marker);
+         this.markers.push(marker);
+        this.infowindows.push(infowindow);
+
+          infowindow.open(this.map, marker);  
+    //       kakao.maps.event.addListener(marker, 'click', ()=> {
+    //       // 마커 위에 인포윈도우를 표시합니다
+    //       this.clickdeallist()
+          
+
+    // });
+
+//  kakao.maps.event.addListener(marker, 'dbclick', ()=> {
+//       // 마커 위에 인포윈도우를 표시합니다
+//       infowindow.close(this.map, marker)});  
+
+
+
+      };
+      // if(!this.marekers.includes(marker)){
+       
+      // }
+      
 
       //     kakao.maps.event.addListener(marker, 'click', ()=> {
       //         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
@@ -329,7 +453,7 @@ export default {
     //     });
     // }
     getdeallist(item){
-      console.log(item);
+      console.log(item+" 들어옴 ");
       
       this.$store.dispatch("getdeallist", item);
     }
