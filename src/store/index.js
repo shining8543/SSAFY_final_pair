@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import axios from 'axios';
 import boardhttp from "@/util/Boardhttp.js";
 import tokenhttp from "@/util/Tokenhttp.js";
 
@@ -268,30 +267,21 @@ export default new Vuex.Store({
     });
   },
   modifyUser(context,payload){
-    //tokenhttp.defaults.headers['Authorization']="Bearer " + context.state.token;
-    boardhttp
+    tokenhttp.defaults.headers['Authorization']="Bearer " + context.state.token;
+    tokenhttp
     .put("/modify",payload)
     .then(({data})=>{
-      context.commit("setUserInfo",{data});
+      context.commit("setUserInfo",data);
     })
   },
   deleteUser(context){
-    //boardhttp.defaults.headers['Authorization']="Bearer " + context.state.token;
-    const instance = axios.create();
-    instance.defaults.baseURL = 'http://localhost:9999/happyhouse';
-    instance.delete("/delete?userid=" + context.state.userInfo.userId).then(()=>{
-        console.log(context.state.userInfo.userId);
-        context.commit("setUserInfo",null);
-        context.commit("setToken",null);
-      })
-    
-    // boardhttp
-    // .delete("/delete?userid="+context.state.userInfo.userId)
-    // .then(()=>{
-    //   console.log(context.state.userInfo.userId);
-    //   context.commit("setUserInfo",null);
-    //   context.commit("setToken",null);
-    // })
+    boardhttp
+    .delete("/delete?userid="+context.state.userInfo.userId)
+    .then(()=>{
+      console.log(context.state.userInfo.userId);
+      context.commit("setUserInfo",null);
+      context.commit("setToken",null);
+    })
   },
   logout(context){
     context.commit("setUserInfo",null);
@@ -307,13 +297,32 @@ export default new Vuex.Store({
 
     })
   },
-  postUser(context,payload){
-    
+  postUser(context,payload){    
     tokenhttp.defaults.headers['Authorization']="Bearer " + context.state.token;
     tokenhttp
     .post("/admin",payload)
-    .then(()=>{
-      this.dispatch("getUserList");
+    .then(({data})=>{
+      alert("등록 완료");
+      context.commit("setUsers",data);
+    })
+  },
+  adminDeleteUser(context,payload){
+    console.log(payload);
+    tokenhttp
+    .delete("/admin/"+payload.userId)
+    .then(({data})=>{
+      alert("삭제 완료");
+      context.commit("setUsers",data);
+    })
+  },
+  adminPutUser(context,payload){
+    console.log(payload);
+    tokenhttp.defaults.headers['Authorization']="Bearer " + context.state.token;
+    tokenhttp
+    .put("/admin",payload)
+    .then(({data})=>{
+      alert("수정 완료");
+      context.commit("setUsers",data);
     })
   },
     getStation(context, payload) {
@@ -329,7 +338,7 @@ export default new Vuex.Store({
       .catch(() => {
         alert("에러가 발생했습니다.");
       });
-    }
+    },
 
     
     // getFormatDate(regtime) {

@@ -1,21 +1,18 @@
 
 
 <template>
-  
   <div>
     <b-input-group>
-  
       <b-dropdown text="Dropdown" variant="info">
         <b-dropdown-item>작성자 </b-dropdown-item>
         <b-dropdown-item>글 내용 </b-dropdown-item>
       </b-dropdown>
 
-
-    <b-form-input></b-form-input>
-<b-input-group-append>
-     <b-button variant="outline-success">submit</b-button>
-    </b-input-group-append>
-  </b-input-group>
+      <b-form-input></b-form-input>
+      <b-input-group-append>
+        <b-button variant="outline-success">submit</b-button>
+      </b-input-group-append>
+    </b-input-group>
 
     <div v-if="boards.length">
       <table class="table table-bordered table-condensed">
@@ -30,11 +27,11 @@
           <th>날짜</th>
         </tr>
 
-      
-   
-        <list-row v-for= "(board,idx) in boards" :key="idx" :board="board"></list-row>
-         
-     
+        <list-row
+          v-for="(board, idx) in boards"
+          :key="idx"
+          :board="board"
+        ></list-row>
       </table>
       <div class="d-flex justify-content-center container">
         <nav aria-label="...">
@@ -51,11 +48,11 @@
 
             <li
               class="page-item"
-              v-for="i in range(startPage,endPage)"
+              v-for="i in range(startPage, endPage)"
               v-bind:key="i"
             >
               <a href="#" @click="movePage(i)" class="page-link">{{ i }}</a>
-            </li>   
+            </li>
             <li v-if="endPage < totalPage" class="page-item">
               <a
                 href="#"
@@ -75,16 +72,14 @@
       <button @click="`${movePage(pages.curPage+1)}`" class="btn btn-primary">다음</button> -->
     </div>
 
-   <button class="btn btn-primary" @click="write" >등록</button> 
+    <button class="btn btn-primary" @click="write">등록</button>
   </div>
-  
 </template>
 
 
 <script>
-
 import ListRow from "@/components/Row.vue";
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 export default {
   name: "list",
   components: {
@@ -92,7 +87,7 @@ export default {
   },
   data: function () {
     return {
-      boarda:[{curpage:"",}],
+      boarda: [{ curpage: "" }],
       // items: [],
       // pages: [],
       // board: "",
@@ -100,16 +95,13 @@ export default {
     };
   },
   created() {
-    this.$store.dispatch("getBoards",this.boarda);// list들 받아오기 
-    
-    
+    this.$store.dispatch("getBoards", this.boarda); // list들 받아오기
   },
-  computed : {
-    ...mapGetters(['boards','startPage','endPage','curPage','totalPage']),
-  
+  computed: {
+    ...mapGetters(["boards", "startPage", "endPage", "curPage", "totalPage"]),
   },
-  methods :{
-    write(){
+  methods: {
+    write() {
       this.$router.push("write");
     },
     range(start, end) {
