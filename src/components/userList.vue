@@ -17,7 +17,7 @@
       <input type="text" v-model="modify_user.userPwd" />
     </td>
     <td>
-      <input type="text" v-model="modify_user.userName" />
+      {{ user.userName }}
     </td>
     <td>
       <input type="text" v-model="modify_user.email" />
@@ -26,7 +26,7 @@
       <input type="text" v-model="modify_user.address" />
     </td>
     <td>
-      <input type="text" v-model="modify_user.joindate" />
+      <input type="date" v-model="modify_user.joindate" />
     </td>
     <td>
       <b-button variant="info" @click="putUser">수정</b-button>
@@ -87,11 +87,13 @@ export default {
         return;
       }
 
-      //this.$state.dispatch("putUser",this.modify_user);
+      this.$store.dispatch("adminPutUser", this.modify_user);
+      this.isModify = !this.isModify;
       alert("수정 완료");
     },
     deleteBtn() {
-      //this.$state.dispatch("deleteUser", this.modify_user);
+      console.log(this.user);
+      this.$store.dispatch("adminDeleteUser", this.user);
     },
   },
 };
