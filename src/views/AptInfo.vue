@@ -2,7 +2,7 @@
 <template>
 <div>
   
-  	<div v-if="aptInfos.bList.length==0">
+  	<div v-if="!aptInfos.bList">
 				<div class=" bd-sidebar">
 					<h4 class=" font-weight-bold">매매 정보</h4>
 					<ul class="nav" id="sidebar_deal_list ">

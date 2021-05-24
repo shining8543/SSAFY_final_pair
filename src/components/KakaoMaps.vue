@@ -59,6 +59,7 @@
 </template>
 <script>
 import kakaohttp from "../util/kakaohttp";
+import boardhttp from "../util/Boardhttp";
 import AptInfo from "../views/AptInfo"
 import { mapGetters } from "vuex";
 export default {
@@ -108,7 +109,12 @@ export default {
       document.head.appendChild(script);
     }
   },
-  computed: {
+  updated:{
+    check(){
+      console.log("updated");
+    }
+  }
+  ,computed: {
     ...mapGetters(["station","deallist"]),
   },
   methods: {
@@ -142,16 +148,35 @@ export default {
         // 영역정보의 북동쪽 정보를 얻어옵니다 
         this.neLatlng = bounds.getNorthEast();
         
+      
         var message = '<p>영역좌표는 남서쪽 위도, 경도는  ' + this.swLatlng.toString() + '이고 <br>'; 
         message += '북동쪽 위도, 경도는  ' + this.neLatlng.toString() + '입니다 </p>'; 
         
+
+        this.matcharea();
+
         var resultDiv = document.getElementById('result');   
         resultDiv.innerHTML = message;
     
 });
       this.geocoder = new kakao.maps.services.Geocoder();
     },
-    removeMarker() {
+    matcharea(){
+       let nela=this.neLatlng.La;
+       let swla =this.swLatlng.La;
+      let nema=(this.neLatlng.Ma);
+     let swma=(this.swLatlng.Ma);
+      boardhttp.get("/house/matcharea?swLat="+swma+"&swlng="+swla+"&neLat="+nema+"&nelng="+nela)
+      .then(({ data }) => {
+        console.log(data);
+      })
+  
+
+      
+    }
+
+
+    ,removeMarker() {
     
       console.log("remvoe marker");
 
