@@ -3,7 +3,7 @@
     
    <apt-info id="deal" :aptInfos="deallist" > </apt-info>
     <div id="map"></div>
-   
+    <div id="result"></div>
     <div>
       <form @submit.prevent="searchPlaces(keyword)">
         키워드 :
@@ -82,6 +82,9 @@ export default {
       station_temp:{},
       aptlist: {},
       area: {},
+      swLatlng:0,
+      neLatlng:0,
+
       options: [
         "Yogesh singh",
         "Sunil singh",
@@ -128,7 +131,24 @@ export default {
       let zoomControl = new kakao.maps.ZoomControl();
       map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
       this.map = map;
-
+      kakao.maps.event.addListener(map, 'bounds_changed', ()=> {             
+    
+        // 지도 영역정보를 얻어옵니다 
+        var bounds = map.getBounds();
+        
+        // 영역정보의 남서쪽 정보를 얻어옵니다 
+        this.swLatlng = bounds.getSouthWest();
+        
+        // 영역정보의 북동쪽 정보를 얻어옵니다 
+        this.neLatlng = bounds.getNorthEast();
+        
+        var message = '<p>영역좌표는 남서쪽 위도, 경도는  ' + this.swLatlng.toString() + '이고 <br>'; 
+        message += '북동쪽 위도, 경도는  ' + this.neLatlng.toString() + '입니다 </p>'; 
+        
+        var resultDiv = document.getElementById('result');   
+        resultDiv.innerHTML = message;
+    
+});
       this.geocoder = new kakao.maps.services.Geocoder();
     },
     removeMarker() {
